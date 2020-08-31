@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <!-- Basic page needs ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  {% if settings.favicon %}
+  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+  {% endif %}
+
+     <!-- Title and description ================================================== -->
+  <title>
+    {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    </title>
+    {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+  
+    <!-- Social meta ================================================== -->
+    {% include 'social-meta-tags' %}
+    {{ 'style.css' | asset_url | stylesheet_tag }}
+    <!-- CSS ================================================== -->
+  {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+    {{ 'reset.css' | asset_url | stylesheet_tag }}
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script>
+    window.theme = window.theme || {};
+
+    var theme = {
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        zoomClose: {{ "products.zoom.close" | t | json }},
+        zoomPrev: {{ "products.zoom.prev" | t | json }},
+        zoomNext: {{ "products.zoom.next" | t | json }},
+        addressError: {{ 'map.errors.address_error' | t | json }},
+        addressNoResults: {{ 'map.errors.address_no_results' | t | json }},
+        addressQueryLimit: {{ 'map.errors.address_query_limit_html' | t | json }},
+        authError: {{ 'map.errors.auth_error_html' | t | json }}
+      },
+      settings: {
+        // Adding some settings to allow the editor to update correctly when they are changed
+        enableWideLayout: {{ settings.enable_wide_layout }},
+        typeAccentTransform: {{ settings.type_accent_transform }},
+        typeAccentSpacing: {{ settings.type_accent_spacing }},
+        baseFontSize: '{{ settings.type_base_size }}',
+        headerBaseFontSize: '{{ settings.type_header_size }}',
+        accentFontSize: '{{ settings.type_accent_size }}'
+      },
+      variables: {
+        mediaQueryMedium: 'screen and (max-width: 768px)',
+        bpSmall: false
+      },
+      moneyFormat: {{ shop.money_format | json }}
+    }
+
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'supports-js');
+  </script>
+
+  <!-- Header hook for plugins ================================================== -->
+  {{ content_for_header }}
+
+  {{ 'jquery-2.2.3.min.js' | asset_url | script_tag }}
+
+  <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
+
+  {% comment %}
+    If you store has customer accounts disabled, you can remove the following JS file
+  {% endcomment %}
+  {% if request.page_type contains 'customers/' %}
+    {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {% endif %}
+</head>
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ request.page_type | handle }}">
+
+  {% section 'header' %}
+
+    <main class="wrapper main-content" role="main">
+        <div class="grid">
+            <div class="grid__item">
+              {{ content_for_layout }}
+            </div>
+        </div>
+      </main>
+
+      <div class=" footer-bg">
+        <div class="row">
+            <div class="col one">
+                <p class="ht">Help & information</p>
+                <p></p>
+                <p>Help</p>
+                <p>Track Order</p>
+                <p>Delivery & Returns</p>
+                <p>20% Military Discount</p>
+            </div>
+            <div class="col two">
+                <p class="ht">About us</p>
+                <p></p>
+                <p>Help Center</p>
+                <p>Store Locations</p>
+                <p>Registry</p>
+                <p>Privacy Ploicy</p>
+                <p>Terms of Service</p>
+            </div>
+            <div class="col three">
+                <p class="ht">Categories</p>
+                <p></p>
+                <p>Sitemap</p>
+                <p>Contact Us</p>
+                <p>Support Center</p>
+                <p>Delivery & Returns</p>
+            </div>
+            <div class="col">
+                <a href="#" class="navbar-brand logo">
+                  <img class="logo__image lazyautosizes ls-is-cached lazyloaded" src="//cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_300x300.jpg?v=1597559768" data-widths="[120, 180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]" data-aspectratio="1.0" data-sizes="auto" alt="surfshopnc" itemprop="logo" data-srcset="//cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_120x.jpg?v=1597559768 120w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_180x.jpg?v=1597559768 180w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_360x.jpg?v=1597559768 360w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_540x.jpg?v=1597559768 540w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_720x.jpg?v=1597559768 720w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_900x.jpg?v=1597559768 900w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1080x.jpg?v=1597559768 1080w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1296x.jpg?v=1597559768 1296w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1512x.jpg?v=1597559768 1512w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1728x.jpg?v=1597559768 1728w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1944x.jpg?v=1597559768 1944w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_2048x.jpg?v=1597559768 2048w" sizes="146px" srcset="//cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_120x.jpg?v=1597559768 120w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_180x.jpg?v=1597559768 180w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_360x.jpg?v=1597559768 360w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_540x.jpg?v=1597559768 540w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_720x.jpg?v=1597559768 720w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_900x.jpg?v=1597559768 900w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1080x.jpg?v=1597559768 1080w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1296x.jpg?v=1597559768 1296w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1512x.jpg?v=1597559768 1512w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1728x.jpg?v=1597559768 1728w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_1944x.jpg?v=1597559768 1944w, //cdn.shopify.com/s/files/1/0457/6054/4926/files/fea83e24143891.563308e959e27_2048x.jpg?v=1597559768 2048w">
+                </a>
+                <p class="bt">Learn About our special promotions!</p>
+                <p class="bt">FOLLOW US</p>
+                <p></p>
+                <div class="row socialmedia">
+                    <div class="col ">
+                        <i class="fab fa-facebook-square"></i>
+                   
+                        <i class="fab fa-twitter-square"></i>
+
+                        <i class="fab fa-instagram-square"></i>
+
+
+                    
+                        <i class="fab fa-youtube"></i>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        
+
+       
+    </div>
+        <div class=" footer-bg-lower">
+            <div class="row">
+                <div class="col">
+                    <p>Copyright &copy; 2020, Made By Aric Williams</p>
+                </div>
+                <div class="col pay">
+                    <div class="float-right">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-discover"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    </div>
+    
+                </div>
+            </div>
+            
+        </div>
+    
+
+    <!-- end of hero section -->
+    <!-- <script src="script.js"></script> -->
+    {{ 'theme.js' | asset_url | script_tag }}
+</body>
+</html>
